@@ -54,31 +54,21 @@ public class CurrentAccount extends BankAccount {
 
 	private String setLicenceId(String str, int[] arr, int maxInd) {
 		// TODO Auto-generated method stub
-		String id = "";
-		for (int i = 0; i < str.length(); i++) {
-			id += ' ';
+		char[] ans = new char[str.length()];
+		int ind = 0;
+		while (arr[maxInd]-- > 0) {
+			ans[ind] = (char) ('A' + maxInd);
+			ind += 2;
 		}
-
-		char ch = (char) (maxInd + 'A');
-		int maxCnt = arr[maxInd];
-		int idx = 0;
-		while (maxCnt > 0) {
-			id = id.substring(0, idx) + ch + id.substring(idx + 1);
-			maxCnt--;
-			idx += 2;
-		}
-
-		arr[maxInd] = 0;
 		for (int i = 0; i < arr.length; i++) {
-			while (arr[i] > 0) {
-				ch = (char) (i + 'A');
-				idx = (idx >= str.length()) ? 1 : idx;
-				id = id.substring(0, idx) + ch + id.substring(idx + 1);
-				arr[i]--;
-				idx += 2;
+			while (arr[i]-- > 0) {
+				if (ind >= str.length())
+					ind = 1;
+				ans[ind] = (char) ('A' + i);
+				ind += 2;
 			}
 		}
-		return id;
+		return String.valueOf(ans);
 	}
 
 	private int maxfreq(int[] arr) {
