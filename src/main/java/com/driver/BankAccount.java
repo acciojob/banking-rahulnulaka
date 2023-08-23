@@ -57,7 +57,7 @@ public class BankAccount {
 			throw new Exception("Account Number can not be generated");
 		}
 		this.accountNumber = createAccountNumber(digits, sum);
-		return null;
+		return this.accountNumber;
 	}
 
 	private String createAccountNumber(int digits, int sum) {
