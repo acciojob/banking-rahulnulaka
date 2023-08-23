@@ -1,6 +1,5 @@
 package com.driver;
 
-
 public class CurrentAccount extends BankAccount {
 	String tradeLicenseId; // consists of Uppercase English characters only
 
@@ -31,8 +30,8 @@ public class CurrentAccount extends BankAccount {
 		// valid license Id
 		// If it is not possible, throw "Valid License can not be generated"
 		// Exception
-		if (!isValide(tradeLicenseId)) {
-			if (!reArrange(tradeLicenseId)) {
+		if (!isValide(this.tradeLicenseId)) {
+			if (!reArrange(this.tradeLicenseId)) {
 				throw new Exception("Valid License can not be generated");
 			}
 		}
@@ -46,30 +45,40 @@ public class CurrentAccount extends BankAccount {
 		}
 		int maxCharInd = maxfreq(arr);
 		if (arr[maxCharInd] <= ((tradeLicenseId2.length() + 1) / 2)) {
-			this.tradeLicenseId = setLicenceId(tradeLicenseId2, arr, maxCharInd);
+			String Id = setLicenceId(tradeLicenseId2, arr, maxCharInd);
+			setTradeLicenseId(Id);
 			return true;
 		}
 		return false;
 	}
 
-	private String setLicenceId(String tradeLicenseId2, int[] arr,
-			int maxCharInd) {
+	private String setLicenceId(String str, int[] arr, int maxInd) {
 		// TODO Auto-generated method stub
-		char[] ans = new char[tradeLicenseId2.length()];
-		int ind = 0;
-		while (arr[maxCharInd]-- > 0) {
-			ans[ind] = (char) ('A' + maxCharInd);
-			ind += 2;
+		String id = "";
+		for (int i = 0; i < str.length(); i++) {
+			id += ' ';
 		}
+
+		char ch = (char) (maxInd + 'A');
+		int maxCnt = arr[maxInd];
+		int idx = 0;
+		while (maxCnt > 0) {
+			id = id.substring(0, idx) + ch + id.substring(idx + 1);
+			maxCnt--;
+			idx += 2;
+		}
+
+		arr[maxInd] = 0;
 		for (int i = 0; i < arr.length; i++) {
-			while (arr[i]-- > 0) {
-				if (ind >= ans.length)
-					ind = 1;
-				ans[ind] = (char) ('A' + i);
-				ind += 2;
+			while (arr[i] > 0) {
+				ch = (char) (i + 'A');
+				idx = (idx >= str.length()) ? 1 : idx;
+				id = id.substring(0, idx) + ch + id.substring(idx + 1);
+				arr[i]--;
+				idx += 2;
 			}
 		}
-		return String.valueOf(ans);
+		return id;
 	}
 
 	private int maxfreq(int[] arr) {
