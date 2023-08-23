@@ -1,6 +1,5 @@
 package com.driver;
 
-import com.driver.BankAccount;
 
 public class CurrentAccount extends BankAccount {
 	String tradeLicenseId; // consists of Uppercase English characters only
@@ -45,27 +44,45 @@ public class CurrentAccount extends BankAccount {
 		for (int i = 0; i < tradeLicenseId2.length(); i++) {
 			arr[tradeLicenseId2.charAt(i) - 'A']++;
 		}
-		int maxCharFreq = maxfreq(arr);
-		if (maxCharFreq <= ((tradeLicenseId2.length() + 1) / 2)) {
-			this.tradeLicenseId = setLicenceId(tradeLicenseId2, arr);
+		int maxCharInd = maxfreq(arr);
+		if (arr[maxCharInd] <= ((tradeLicenseId2.length() + 1) / 2)) {
+			this.tradeLicenseId = setLicenceId(tradeLicenseId2, arr, maxCharInd);
 			return true;
 		}
 		return false;
 	}
 
-	private String setLicenceId(String tradeLicenseId2, int[] arr) {
+	private String setLicenceId(String tradeLicenseId2, int[] arr,
+			int maxCharInd) {
 		// TODO Auto-generated method stub
-
-		return null;
+		char[] ans = new char[tradeLicenseId2.length()];
+		int ind = 0;
+		while (arr[maxCharInd]-- > 0) {
+			ans[ind] = (char) ('A' + maxCharInd);
+			ind += 2;
+		}
+		for (int i = 0; i < arr.length; i++) {
+			while (arr[i]-- > 0) {
+				if (ind >= ans.length)
+					ind = 1;
+				ans[ind] = (char) ('A' + i);
+				ind += 2;
+			}
+		}
+		return String.valueOf(ans);
 	}
 
 	private int maxfreq(int[] arr) {
 		// TODO Auto-generated method stub
 		int max = 0;
+		int maxind = 0;
 		for (int i = 0; i < 26; i++) {
-			max = Math.max(arr[i], max);
+			if (arr[i] > max) {
+				max = arr[i];
+				maxind = i;
+			}
 		}
-		return max;
+		return maxind;
 	}
 
 	private boolean isValide(String tradeLicenseId2) {
